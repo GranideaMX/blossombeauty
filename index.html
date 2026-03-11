@@ -1,201 +1,1497 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blossom Beauty Rentals — Lujo para Cada Celebración</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-pale: #F5E6C0;
+      --black: #0A0A0A;
+      --deep: #111008;
+      --charcoal: #1C1A14;
+      --ivory: #FAF6EE;
+      --text-muted: #9A8A6A;
+    }
 
-<title>Blossom Beauty</title>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-<style>
+    html { scroll-behavior: smooth; }
 
-body{
-font-family: 'Segoe UI', sans-serif;
-margin:0;
-background:#fff5f8;
-color:#333;
-text-align:center;
-}
+    body {
+      background: var(--black);
+      color: var(--ivory);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      overflow-x: hidden;
+      cursor: none;
+    }
 
-header{
-background:#d63384;
-color:white;
-padding:60px 20px;
-}
+    /* CUSTOM CURSOR */
+    .cursor {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.4s cubic-bezier(.25,.46,.45,.94), opacity 0.3s;
+      opacity: 0.6;
+    }
 
-h1{
-margin:0;
-font-size:42px;
-}
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.35;
+    }
 
-.tagline{
-font-size:20px;
-margin-top:10px;
-}
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 28px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+      transition: background 0.4s;
+    }
+    nav.scrolled { background: rgba(10,10,10,0.97); }
 
-.hero{
-background-image:url("https://images.unsplash.com/photo-1509631179647-0177331693ae");
-background-size:cover;
-background-position:center;
-height:420px;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:38px;
-font-weight:bold;
-text-shadow:2px 2px 10px black;
-}
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--ivory);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); font-style: italic; }
 
-.section{
-padding:50px 20px;
-}
+    .nav-links {
+      display: flex; gap: 44px; list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
 
-.services{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:25px;
-margin-top:30px;
-}
+    .nav-cta {
+      border: 1px solid var(--gold);
+      color: var(--gold) !important;
+      padding: 10px 24px;
+      letter-spacing: 0.2em;
+      font-size: 0.65rem !important;
+      text-transform: uppercase;
+      transition: all 0.3s !important;
+    }
+    .nav-cta:hover {
+      background: var(--gold) !important;
+      color: var(--black) !important;
+    }
 
-.card{
-background:white;
-border-radius:10px;
-width:260px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-overflow:hidden;
-}
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-.card img{
-width:100%;
-height:180px;
-object-fit:cover;
-}
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 30% 60%, rgba(201,168,76,0.04) 0%, transparent 60%),
+        linear-gradient(135deg, #0A0A0A 0%, #111008 50%, #0d0b06 100%);
+    }
 
-.card h3{
-margin:10px 0;
-}
+    /* Decorative lines */
+    .hero-line {
+      position: absolute;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      width: 1px;
+      opacity: 0.2;
+    }
+    .hero-line:nth-child(1) { left: 15%; height: 100%; top: 0; animation: lineFloat 8s ease-in-out infinite; }
+    .hero-line:nth-child(2) { right: 15%; height: 60%; top: 20%; animation: lineFloat 10s ease-in-out infinite reverse; }
+    .hero-line:nth-child(3) { left: 50%; height: 40%; top: 0; opacity: 0.1; animation: lineFloat 6s ease-in-out infinite; }
 
-.card p{
-padding:0 15px 20px;
-}
+    @keyframes lineFloat {
+      0%, 100% { opacity: 0.15; transform: scaleY(1); }
+      50% { opacity: 0.3; transform: scaleY(1.05); }
+    }
 
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-padding:30px;
-}
+    /* Gold orb */
+    .hero-orb {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      top: 50%; left: 65%;
+      transform: translate(-50%, -50%);
+      animation: orbPulse 6s ease-in-out infinite;
+    }
+    @keyframes orbPulse {
+      0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.8; }
+      50% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+    }
 
-.gallery img{
-width:100%;
-border-radius:10px;
-height:260px;
-object-fit:cover;
-}
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      max-width: 820px;
+      padding: 0 40px;
+    }
 
-.construction{
-margin-top:40px;
-padding:25px;
-background:#ffe5ec;
-border:3px dashed #d63384;
-font-size:22px;
-font-weight:bold;
-}
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.3s;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
 
-footer{
-margin-top:40px;
-background:#333;
-color:white;
-padding:25px;
-}
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7.5rem);
+      font-weight: 300;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      color: var(--ivory);
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 0.5s;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+      display: block;
+    }
 
-</style>
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 56px;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 0.8s;
+    }
+
+    .hero-actions {
+      display: flex; gap: 20px; justify-content: center; align-items: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 1.1s;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--black);
+      padding: 16px 44px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-weight: 400;
+      transition: all 0.35s cubic-bezier(.25,.46,.45,.94);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--gold-light);
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(.25,.46,.45,.94);
+    }
+    .btn-primary:hover::before { transform: translateX(0); }
+    .btn-primary span { position: relative; z-index: 1; }
+
+    .btn-secondary {
+      color: var(--ivory);
+      padding: 16px 44px;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.35s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* MARQUEE */
+    .marquee-wrapper {
+      border-top: 1px solid rgba(201,168,76,0.2);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      overflow: hidden;
+      padding: 16px 0;
+      background: rgba(201,168,76,0.03);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 25s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 24px;
+      padding: 0 32px;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .marquee-dot {
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* SECTION COMMONS */
+    section { position: relative; z-index: 2; }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .section-label::before {
+      content: '';
+      width: 30px; height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--ivory);
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* SERVICES */
+    .services {
+      padding: 120px 60px;
+      background: var(--deep);
+    }
+
+    .services-header {
+      max-width: 600px;
+      margin-bottom: 80px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: var(--charcoal);
+      cursor: none;
+    }
+
+    .service-card-bg {
+      position: absolute; inset: 0;
+      transition: transform 0.7s cubic-bezier(.25,.46,.45,.94);
+    }
+
+    .service-card:nth-child(1) .service-card-bg {
+      background:
+        linear-gradient(160deg, rgba(201,168,76,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.1) 0%, transparent 60%),
+        linear-gradient(to bottom, #1a1508, #0d0b06);
+    }
+    .service-card:nth-child(2) .service-card-bg {
+      background:
+        linear-gradient(200deg, rgba(201,168,76,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.12) 0%, transparent 60%),
+        linear-gradient(to bottom, #110e05, #0a0900);
+    }
+    .service-card:nth-child(3) .service-card-bg {
+      background:
+        linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 20%, rgba(201,168,76,0.15) 0%, transparent 60%),
+        linear-gradient(to bottom, #181408, #0d0b06);
+    }
+
+    .service-card:hover .service-card-bg { transform: scale(1.05); }
+
+    .service-card-icon {
+      position: absolute;
+      top: 48px; left: 48px;
+      width: 64px; height: 64px;
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s;
+    }
+    .service-card:hover .service-card-icon { border-color: var(--gold); }
+
+    .service-card-icon svg {
+      width: 28px; height: 28px;
+      stroke: var(--gold);
+      fill: none;
+      stroke-width: 1;
+    }
+
+    /* Decorative number */
+    .service-card-num {
+      position: absolute;
+      top: 40px; right: 48px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      font-weight: 300;
+      color: rgba(201,168,76,0.06);
+      line-height: 1;
+      transition: color 0.3s;
+    }
+    .service-card:hover .service-card-num { color: rgba(201,168,76,0.1); }
+
+    .service-card-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px;
+      background: linear-gradient(to top, rgba(10,10,10,0.97) 60%, transparent);
+      transform: translateY(0);
+      transition: transform 0.4s ease;
+    }
+
+    .service-card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--ivory);
+      margin-bottom: 12px;
+    }
+
+    .service-card-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .service-card-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      transition: gap 0.3s;
+    }
+    .service-card-link:hover { gap: 16px; }
+    .service-card-link svg {
+      width: 16px; height: 16px;
+      stroke: var(--gold);
+      fill: none;
+    }
+
+    /* EXPERIENCE / ABOUT */
+    .experience {
+      padding: 160px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .experience-visual {
+      position: relative;
+    }
+
+    .exp-frame {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exp-frame-inner {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 40% 30%, rgba(201,168,76,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #1a1508 0%, #0a0800 100%);
+    }
+
+    /* Decorative grid lines */
+    .exp-frame::before {
+      content: '';
+      position: absolute; inset: 24px;
+      border: 1px solid rgba(201,168,76,0.15);
+      z-index: 2;
+    }
+    .exp-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 60%; height: 60%;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      z-index: 2;
+      opacity: 0.4;
+    }
+
+    .exp-frame-text {
+      position: absolute; inset: 0; z-index: 3;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px;
+    }
+
+    .exp-stat {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .exp-stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .exp-badge {
+      position: absolute;
+      bottom: 40px; right: -32px;
+      width: 120px; height: 120px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 2px;
+      z-index: 4;
+    }
+    .exp-badge-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--black);
+      line-height: 1;
+    }
+    .exp-badge-text {
+      font-size: 0.45rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .experience-text .section-label { margin-bottom: 24px; }
+    .experience-text .section-title { margin-bottom: 32px; }
+
+    .experience-text p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 2;
+      margin-bottom: 20px;
+    }
+
+    .exp-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .exp-pillar {
+      border-left: 1px solid rgba(201,168,76,0.3);
+      padding-left: 20px;
+    }
+    .exp-pillar-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--ivory);
+      margin-bottom: 6px;
+    }
+    .exp-pillar-desc {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      letter-spacing: 0.03em;
+    }
+
+    /* HOW IT WORKS */
+    .process {
+      padding: 120px 60px;
+      background: var(--deep);
+      text-align: center;
+    }
+
+    .process-header {
+      max-width: 560px;
+      margin: 0 auto 100px;
+    }
+    .process-header .section-label { justify-content: center; }
+    .process-header .section-label::before { display: none; }
+    .process-header .section-title { margin-top: 16px; }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 12.5%; right: 12.5%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), var(--gold), transparent);
+      opacity: 0.25;
+    }
+
+    .process-step {
+      padding: 0 32px;
+      position: relative;
+    }
+
+    .process-step-num {
+      width: 64px; height: 64px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 40px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+      background: var(--deep);
+      position: relative; z-index: 1;
+      transition: all 0.3s;
+    }
+    .process-step:hover .process-step-num {
+      background: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+
+    .process-step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--ivory);
+      margin-bottom: 12px;
+    }
+
+    .process-step-desc {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+
+    /* GALLERY */
+    .gallery {
+      padding: 120px 60px;
+    }
+
+    .gallery-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 64px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 3px;
+    }
+
+    .gallery-item {
+      background: var(--charcoal);
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item:first-child {
+      grid-row: span 2;
+    }
+
+    .gallery-item-inner {
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+      transition: transform 0.7s cubic-bezier(.25,.46,.45,.94);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .gallery-item:hover .gallery-item-inner { transform: scale(1.03); }
+
+    .gallery-item:nth-child(1) .gallery-item-inner {
+      background:
+        radial-gradient(ellipse at 40% 30%, rgba(201,168,76,0.2) 0%, transparent 55%),
+        linear-gradient(160deg, #1f1a08 0%, #0a0800 100%);
+      min-height: 520px;
+    }
+    .gallery-item:nth-child(2) .gallery-item-inner {
+      background: linear-gradient(135deg, #171207 0%, #0a0800 100%);
+    }
+    .gallery-item:nth-child(3) .gallery-item-inner {
+      background: linear-gradient(200deg, #1a1508 0%, #080600 100%);
+    }
+    .gallery-item:nth-child(4) .gallery-item-inner {
+      background: linear-gradient(170deg, #131007 0%, #0a0800 100%);
+    }
+    .gallery-item:nth-child(5) .gallery-item-inner {
+      background: linear-gradient(190deg, #1c1809 0%, #0d0a04 100%);
+    }
+
+    .gallery-placeholder {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .gallery-placeholder-icon {
+      width: 48px; height: 48px;
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .gallery-placeholder-icon svg {
+      width: 20px; height: 20px;
+      stroke: rgba(201,168,76,0.4);
+      fill: none;
+    }
+    .gallery-placeholder p {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(201,168,76,0.3);
+      text-transform: uppercase;
+    }
+
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay span {
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 10px 20px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      padding: 120px 60px;
+      background: var(--deep);
+      overflow: hidden;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    .testimonials-header .section-label { justify-content: center; }
+    .testimonials-header .section-label::before { display: none; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .testimonial-card {
+      background: var(--charcoal);
+      padding: 56px 48px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .testimonial-card:hover { background: #1f1c10; }
+
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 20px; right: 36px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem;
+      color: rgba(201,168,76,0.08);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .testimonial-stars {
+      display: flex; gap: 4px;
+      margin-bottom: 28px;
+    }
+    .testimonial-stars span {
+      color: var(--gold);
+      font-size: 0.7rem;
+    }
+
+    .testimonial-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--ivory);
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    .testimonial-author {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .testimonial-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--black);
+    }
+    .testimonial-name {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--ivory);
+      text-transform: uppercase;
+    }
+    .testimonial-event {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-top: 3px;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      padding: 160px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.05) 0%, transparent 60%),
+        var(--black);
+    }
+
+    .cta-section .section-label { justify-content: center; }
+    .cta-section .section-label::before { display: none; }
+
+    .cta-section .section-title {
+      font-size: clamp(3rem, 6vw, 6rem);
+      max-width: 700px;
+      margin: 20px auto 32px;
+    }
+
+    .cta-section > p {
+      position: relative; z-index: 1;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      max-width: 440px;
+      margin: 0 auto 56px;
+      line-height: 2;
+      letter-spacing: 0.05em;
+    }
+
+    .cta-actions {
+      position: relative; z-index: 1;
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 80px 60px 40px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--ivory);
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    .footer-brand-logo span { color: var(--gold); font-style: italic; }
+
+    .footer-brand p {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 2;
+      max-width: 280px;
+    }
+
+    .footer-social {
+      display: flex; gap: 16px;
+      margin-top: 28px;
+    }
+    .footer-social a {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.65rem;
+    }
+    .footer-social a:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .footer-col-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      letter-spacing: 0.05em;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-bottom p {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-bottom-links {
+      display: flex; gap: 28px;
+    }
+    .footer-bottom-links a {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.2);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+    .footer-bottom-links a:hover { color: var(--gold); }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* GOLD DIVIDER */
+    .gold-divider {
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 60px;
+    }
+    .gold-divider::before, .gold-divider::after {
+      content: ''; flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.3));
+    }
+    .gold-divider::after {
+      background: linear-gradient(to left, transparent, rgba(201,168,76,0.3));
+    }
+    .gold-divider-icon {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      nav { padding: 24px 32px; }
+      .nav-links { display: none; }
+      .services { padding: 80px 32px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .experience { padding: 80px 32px; grid-template-columns: 1fr; gap: 60px; }
+      .exp-badge { right: 16px; }
+      .process { padding: 80px 32px; }
+      .process-steps { grid-template-columns: repeat(2, 1fr); gap: 48px; }
+      .process-steps::before { display: none; }
+      .gallery { padding: 80px 32px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:first-child { grid-row: span 1; }
+      .gallery-item:first-child .gallery-item-inner { min-height: 220px; }
+      .testimonials { padding: 80px 32px; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .cta-section { padding: 100px 32px; }
+      footer { padding: 60px 32px 32px; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 20px 20px; }
+      .hero-content { padding: 0 20px; }
+      .services { padding: 60px 20px; }
+      .gallery { padding: 60px 20px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .process { padding: 60px 20px; }
+      .process-steps { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 40px; }
+      footer { padding: 40px 20px 24px; }
+      .cta-section { padding: 80px 20px; }
+      .experience { padding: 60px 20px; }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-<h1>Blossom Beauty</h1>
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">Blossom <span>Beauty</span></a>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#proceso">Proceso</a></li>
+      <li><a href="#contacto" class="nav-cta">Reservar</a></li>
+    </ul>
+  </nav>
 
-<p class="tagline">
-Renta de Vestidos y Servicios de Belleza
-</p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-line"></div>
+      <div class="hero-line"></div>
+      <div class="hero-line"></div>
+    </div>
+    <div class="hero-orb"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Renta de Lujo · México</div>
+      <h1 class="hero-title">
+        Tu Noche<br/>
+        <em>Perfecta</em>
+      </h1>
+      <p class="hero-subtitle">Vestidos, Maquillaje & Peinados para tus Celebraciones más Glamurosas</p>
+      <div class="hero-actions">
+        <a href="#servicios" class="btn-primary"><span>Explorar Servicios</span></a>
+        <a href="#contacto" class="btn-secondary">Hacer Reservación</a>
+      </div>
+    </div>
+  </section>
 
-<p>
-Para Bodas • XV Años • Galas • Eventos Especiales
-</p>
+  <!-- MARQUEE -->
+  <div class="marquee-wrapper">
+    <div class="marquee-track">
+      <!-- Repeated twice for seamless loop -->
+      <div class="marquee-item">Vestidos de Alta Costura <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Maquillaje Profesional <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Peinados de Gala <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Bodas &amp; XV Años <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Alfombra Roja <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Eventos Corporativos <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Gala &amp; Premiaciones <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Vestidos de Alta Costura <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Maquillaje Profesional <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Peinados de Gala <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Bodas &amp; XV Años <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Alfombra Roja <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Eventos Corporativos <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Gala &amp; Premiaciones <span class="marquee-dot"></span></div>
+    </div>
+  </div>
 
-</header>
+  <!-- SERVICES -->
+  <section class="services" id="servicios">
+    <div class="services-header reveal">
+      <div class="section-label">Nuestros Servicios</div>
+      <h2 class="section-title">Lujo que se<br/><em>Adapta a Ti</em></h2>
+    </div>
+    <div class="services-grid reveal">
 
-<div class="hero">
-Elegancia para tus momentos especiales
-</div>
+      <!-- Vestidos -->
+      <div class="service-card">
+        <div class="service-card-bg"></div>
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2 L8 6 L3 7 L5 14 L8 16 L8 22 L16 22 L16 16 L19 14 L21 7 L16 6 Z"/>
+            <path d="M8 6 Q12 10 16 6"/>
+          </svg>
+        </div>
+        <div class="service-card-num">01</div>
+        <div class="service-card-content">
+          <h3 class="service-card-name">Vestidos de Diseñador</h3>
+          <p class="service-card-desc">Colección exclusiva de vestidos de noche, coctel y gala de los mejores diseñadores. Tallas y estilos para toda ocasión especial.</p>
+          <a href="#contacto" class="service-card-link">
+            Ver Colección
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
 
-<div class="section">
+      <!-- Maquillaje -->
+      <div class="service-card">
+        <div class="service-card-bg"></div>
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="10" rx="5" ry="7"/>
+            <path d="M7 10 Q5 16 8 19 Q10 21 12 21 Q14 21 16 19 Q19 16 17 10"/>
+            <path d="M9 6 Q12 4 15 6"/>
+          </svg>
+        </div>
+        <div class="service-card-num">02</div>
+        <div class="service-card-content">
+          <h3 class="service-card-name">Maquillaje Artístico</h3>
+          <p class="service-card-desc">Artistas de maquillaje certificados que crearán el look perfecto para tu evento. Desde natural hasta glamour total, tú decides.</p>
+          <a href="#contacto" class="service-card-link">
+            Agendar Sesión
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
 
-<h2>Nuestros Servicios de Belleza</h2>
+      <!-- Peinados -->
+      <div class="service-card">
+        <div class="service-card-bg"></div>
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M8 12 Q6 16 8 20 Q10 22 12 22"/>
+            <path d="M16 12 Q18 16 16 20 Q14 22 12 22"/>
+            <path d="M9 5 Q12 2 15 5"/>
+          </svg>
+        </div>
+        <div class="service-card-num">03</div>
+        <div class="service-card-content">
+          <h3 class="service-card-name">Peinados de Gala</h3>
+          <p class="service-card-desc">Estilistas expertos para crear peinados que complementen tu look. Recogidos elegantes, ondas hollywoodenses y mucho más.</p>
+          <a href="#contacto" class="service-card-link">
+            Ver Estilos
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
 
-<div class="services">
+    </div>
+  </section>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1487412912498-0447578fcca8">
-<h3>Maquillaje Profesional</h3>
-<p>Realza tu belleza con maquillaje profesional para tu evento especial.</p>
-</div>
+  <div class="gold-divider"><div class="gold-divider-icon"></div></div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1604654894610-df63bc536371">
-<h3>Diseño de Uñas</h3>
-<p>Uñas elegantes que combinan perfectamente con tu vestido y estilo.</p>
-</div>
+  <!-- ABOUT / EXPERIENCE -->
+  <section class="experience" id="nosotros">
+    <div class="experience-visual reveal">
+      <div class="exp-frame">
+        <div class="exp-frame-inner"></div>
+        <div class="exp-frame-text">
+          <div class="exp-stat">500+</div>
+          <div class="exp-stat-label">Clientas Satisfechas</div>
+        </div>
+      </div>
+      <div class="exp-badge">
+        <div class="exp-badge-num">5★</div>
+        <div class="exp-badge-text">Calidad<br/>Garantizada</div>
+      </div>
+    </div>
+    <div class="experience-text reveal">
+      <div class="section-label">Nuestra Historia</div>
+      <h2 class="section-title">Hacemos que cada<br/><em>Momento Brille</em></h2>
+      <p>En Blossom Beauty Rentals creemos que toda mujer merece sentirse extraordinaria en su noche especial, sin importar el presupuesto. Llevamos años vistiendo a las mujeres más elegantes de México para sus celebraciones más importantes.</p>
+      <p>Desde quinceañeras hasta premiaciones estilo Oscar, nuestra misión es que cada clienta salga sintiéndose la protagonista absoluta de su evento.</p>
+      <div class="exp-pillars">
+        <div class="exp-pillar">
+          <div class="exp-pillar-name">Colección Exclusiva</div>
+          <div class="exp-pillar-desc">Piezas cuidadosamente seleccionadas de las mejores casas de moda</div>
+        </div>
+        <div class="exp-pillar">
+          <div class="exp-pillar-name">Equipo Certificado</div>
+          <div class="exp-pillar-desc">Profesionales con años de experiencia en alta costura y belleza</div>
+        </div>
+        <div class="exp-pillar">
+          <div class="exp-pillar-name">Experiencia Integral</div>
+          <div class="exp-pillar-desc">Vestido, maquillaje y peinado en un solo lugar</div>
+        </div>
+        <div class="exp-pillar">
+          <div class="exp-pillar-name">Atención Personalizada</div>
+          <div class="exp-pillar-desc">Consultoría individual para encontrar tu look perfecto</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e">
-<h3>Peinado Profesional</h3>
-<p>Peinados elegantes para bodas, quinceañeras y celebraciones.</p>
-</div>
+  <div class="gold-divider"><div class="gold-divider-icon"></div></div>
 
-</div>
+  <!-- PROCESS -->
+  <section class="process" id="proceso">
+    <div class="process-header reveal">
+      <div class="section-label">Cómo Funciona</div>
+      <h2 class="section-title">Tu Transformación<br/><em>en 4 Pasos</em></h2>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="process-step-num">I</div>
+        <h3 class="process-step-title">Consulta</h3>
+        <p class="process-step-desc">Agenda tu cita de consulta y cuéntanos sobre tu evento, tu estilo y tus sueños. Sin costo alguno.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">II</div>
+        <h3 class="process-step-title">Selección</h3>
+        <p class="process-step-desc">Prueba nuestra colección y elige el vestido que te haga brillar. Nuestro equipo te guiará en cada paso.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">III</div>
+        <h3 class="process-step-title">Preparación</h3>
+        <p class="process-step-desc">El día de tu evento, te recibimos para maquillaje, peinado y ajustes finales del vestido.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">IV</div>
+        <h3 class="process-step-title">¡Brilla!</h3>
+        <p class="process-step-desc">Sal lista para conquistar la noche. Después, simplemente devuelves el vestido sin complicaciones.</p>
+      </div>
+    </div>
+  </section>
 
-</div>
+  <!-- GALLERY -->
+  <section class="gallery" id="galeria">
+    <div class="gallery-header reveal">
+      <div>
+        <div class="section-label">Galería</div>
+        <h2 class="section-title">Momentos<br/><em>Inolvidables</em></h2>
+      </div>
+      <a href="#contacto" class="btn-secondary" style="align-self: flex-end;">Ver Todo</a>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-item-inner">
+          <div class="gallery-placeholder">
+            <div class="gallery-placeholder-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <p>Vestido de Gala</p>
+          </div>
+        </div>
+        <div class="gallery-overlay"><span>Ver Detalle</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner">
+          <div class="gallery-placeholder">
+            <div class="gallery-placeholder-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <p>Maquillaje</p>
+          </div>
+        </div>
+        <div class="gallery-overlay"><span>Ver Detalle</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner">
+          <div class="gallery-placeholder">
+            <div class="gallery-placeholder-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <p>Peinado</p>
+          </div>
+        </div>
+        <div class="gallery-overlay"><span>Ver Detalle</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner">
+          <div class="gallery-placeholder">
+            <div class="gallery-placeholder-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <p>Look Completo</p>
+          </div>
+        </div>
+        <div class="gallery-overlay"><span>Ver Detalle</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner">
+          <div class="gallery-placeholder">
+            <div class="gallery-placeholder-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <p>XV Años</p>
+          </div>
+        </div>
+        <div class="gallery-overlay"><span>Ver Detalle</span></div>
+      </div>
+    </div>
+  </section>
 
-<div class="section">
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="testimonials-header reveal">
+      <div class="section-label">Testimonios</div>
+      <h2 class="section-title" style="margin-top:16px">Lo que Dicen<br/><em>Nuestras Clientas</em></h2>
+    </div>
+    <div class="testimonials-grid reveal">
 
-<h2>Nuestra Colección de Vestidos</h2>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">"Me sentí como una reina en mi boda. El vestido era exactamente lo que soñé y el maquillaje fue impecable. ¡Todo el mundo preguntó por Blossom!"</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">Mariana García</div>
+            <div class="testimonial-event">Boda · Guadalajara</div>
+          </div>
+        </div>
+      </div>
 
-<div class="gallery">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">"Para mis XV años quería algo especial. Blossom lo hizo posible: vestido de ensueño, peinado perfecto y maquillaje que duró toda la noche."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div>
+            <div class="testimonial-name">Sofía Ramírez</div>
+            <div class="testimonial-event">XV Años · Ciudad de México</div>
+          </div>
+        </div>
+      </div>
 
-<img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c">
-<img src="https://images.unsplash.com/photo-1520975922326-1d2b4c8b5c0b">
-<img src="https://images.unsplash.com/photo-1520975916090-3105956dac38">
-<img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c">
-<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
-<img src="https://images.unsplash.com/photo-1520975661595-6453be3f7070">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">"Asistí a una gala empresarial y gracias a Blossom llegué con el look más elegante del salón. El servicio fue absolutamente profesional."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">V</div>
+          <div>
+            <div class="testimonial-name">Valentina Torres</div>
+            <div class="testimonial-event">Gala Corporativa · Monterrey</div>
+          </div>
+        </div>
+      </div>
 
-</div>
+    </div>
+  </section>
 
-<div class="construction">
+  <!-- CTA -->
+  <section class="cta-section" id="contacto">
+    <div style="position:relative;z-index:1">
+      <div class="section-label">Reservaciones</div>
+      <h2 class="section-title">¿Lista para<br/><em>Brillar?</em></h2>
+    </div>
+    <p>Agenda tu consulta gratuita hoy. Nuestro equipo te acompañará en cada detalle para que tu noche sea perfecta.</p>
+    <div class="cta-actions">
+      <a href="https://wa.me/521XXXXXXXXXX?text=Hola!%20Me%20gustaría%20agendar%20una%20consulta%20en%20Blossom%20Beauty%20Rentals"
+         class="btn-primary" target="_blank"><span>Escríbenos por WhatsApp</span></a>
+      <a href="mailto:hola@blossombeauty.rentals" class="btn-secondary">Enviar Correo</a>
+    </div>
+    <div style="margin-top:80px; display:flex; justify-content:center; gap:60px; flex-wrap:wrap; position:relative; z-index:1;">
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--gold);">500+</div>
+        <div style="font-size:0.6rem;letter-spacing:0.25em;color:var(--text-muted);text-transform:uppercase;margin-top:6px;">Clientas Atendidas</div>
+      </div>
+      <div style="width:1px;background:rgba(201,168,76,0.2);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--gold);">3</div>
+        <div style="font-size:0.6rem;letter-spacing:0.25em;color:var(--text-muted);text-transform:uppercase;margin-top:6px;">Servicios Especializados</div>
+      </div>
+      <div style="width:1px;background:rgba(201,168,76,0.2);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--gold);">5★</div>
+        <div style="font-size:0.6rem;letter-spacing:0.25em;color:var(--text-muted);text-transform:uppercase;margin-top:6px;">Calificación Promedio</div>
+      </div>
+    </div>
+  </section>
 
-🚧 SITIO WEB EN CONSTRUCCIÓN 🚧
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-logo">Blossom <span>Beauty</span></div>
+        <p>Especialistas en renta de vestidos de diseñador, maquillaje artístico y peinados de gala para las celebraciones más importantes de tu vida.</p>
+        <div class="footer-social">
+          <a href="#" title="Instagram">IG</a>
+          <a href="#" title="Facebook">FB</a>
+          <a href="#" title="TikTok">TK</a>
+          <a href="#" title="WhatsApp">WA</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Servicios</div>
+        <ul class="footer-links">
+          <li><a href="#servicios">Vestidos de Noche</a></li>
+          <li><a href="#servicios">Maquillaje Profesional</a></li>
+          <li><a href="#servicios">Peinados de Gala</a></li>
+          <li><a href="#servicios">Paquetes Completos</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Eventos</div>
+        <ul class="footer-links">
+          <li><a href="#contacto">Bodas</a></li>
+          <li><a href="#contacto">XV Años</a></li>
+          <li><a href="#contacto">Galas & Premiaciones</a></li>
+          <li><a href="#contacto">Eventos Corporativos</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contacto</div>
+        <ul class="footer-links">
+          <li><a href="mailto:hola@blossombeauty.rentals">hola@blossombeauty.rentals</a></li>
+          <li><a href="https://wa.me/521XXXXXXXXXX">WhatsApp</a></li>
+          <li><a href="#nosotros">Sobre Nosotros</a></li>
+          <li><a href="#proceso">Cómo Funciona</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Blossom Beauty Rentals · Todos los derechos reservados · México</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+        <a href="#">Política de Renta</a>
+      </div>
+    </div>
+  </footer>
 
-<br><br>
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+    });
+    function animateRing() {
+      rx += (mx - rx - 18) * 0.12;
+      ry += (my - ry - 18) * 0.12;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
 
-Muy pronto podrás conocer nuestra colección de vestidos elegantes  
-y reservar tus servicios de belleza para tu evento especial.
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform += ' scale(2)';
+        ring.style.transform += ' scale(1.5)';
+        ring.style.opacity = '1';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.opacity = '0.6';
+      });
+    });
 
-</div>
+    // NAVBAR SCROLL
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
 
-</div>
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(el => observer.observe(el));
 
-<footer>
-
-<p>© 2026 Blossom Beauty</p>
-
-<p>Donde la Belleza y la Elegancia se Encuentran</p>
-
-</footer>
-
+    // SMOOTH SCROLL
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
